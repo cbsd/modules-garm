@@ -558,7 +558,7 @@ case "${mode}" in
 		echo "ADD REPO"
 		[ -z "${owner}" ] && err 1 "${N1_COLOR}${CBSD_APP}: please add: ${N2_COLOR}owner=${N0_COLOR}"
 		[ -z "${reponame}" ] && err 1 "${N1_COLOR}${CBSD_APP}: please add: ${N2_COLOR}reponame=${N0_COLOR}"
-		echo "please go to https://github.com/${owner}/${reponame}/settings/hooks:"
+		echo "Please go to: https://github.com/${owner}/${reponame}/settings/hooks"
 		echo "1) Add webhooks"
 		echo "2) Set 'Payload URL' to: ${URL}/webhooks"
 		echo "3) Set 'Content type' to: 'application/json'"
