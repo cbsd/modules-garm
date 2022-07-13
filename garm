@@ -40,6 +40,9 @@ ${H3_COLOR}Options${N0_COLOR}:
 "
 EXTHELP=
 
+API_FQDN=
+. /etc/rc.conf		# API_FQDN ?
+
 . ${subrdir}/tools.subr
 . ${subrdir}/cbsdinit.subr
 . ${subrdir}/system.subr
@@ -445,11 +448,22 @@ else
 	${ECHO} "${N1_COLOR}webhook secret exist: ${N2_COLOR}${WEBHOOK_SECRET}${N0_COLOR}"
 fi
 
+URL_EXAMPLE="https://mybee.example.com"
+
+if [ -n "${API_FQDN}" ]; then
+	case "${API_FQDN}" in
+		*.*)
+			URL_EXAMPLE="https://${API_FQDN}"
+			;;
+	esac
+fi
+
 if [ -z "${URL}" ]; then
 	trap "exit" SIGHUP SIGINT SIGTERM
 	while [ true ]; do
-		printf "${N1_COLOR}Please enter URL which you will use for the hook, e.g. ${N2_COLOR}https://mybee.example.com${N0_COLOR}: "
+		printf "${N1_COLOR}Please enter URL which you will use for the hook, e.g. ${N2_COLOR}${URL_EXAMPLE}${N0_COLOR}: "
 		read URL
+		[ -z "${URL}" ] && URL="${URL_EXAMPLE}"
 		if [ -n "${URL}" ]; then
 			${SYSRC_CMD} -qf ${MOD_CONFIG} URL="${URL}" > /dev/null 2>&1
 			break
